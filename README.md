@@ -1,5 +1,9 @@
 # Firebase CLI [![Actions Status][gh-actions-badge]][gh-actions] [![Node Version][node-badge]][npm] [![NPM version][npm-badge]][npm]
 
+> This is an experimental fork of the [Firebase Tools](https://github.com/firebase/firebase-tools) which integrates [isolate-package](https://github.com/0x80/isolate-package/) as part of the functions `deploy` command in order to support monorepo setups. Alternatively, can use isolate-package separately in the `predeploy` step of your configuration, but having the isolation process integrated and only running as part of the deploy command is essential if you like to preserve live code updates when running the Firebase emulators locally during development.
+
+> The published versions of the fork will be kept the same as the original `firebase-tools` package, so you know how up-to-date it is.
+
 The Firebase Command Line Interface (CLI) Tools can be used to test, manage, and deploy your Firebase project from the command line.
 
 - Deploy code and assets to your Firebase projects
