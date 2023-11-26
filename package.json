@@ -1,7 +1,7 @@
 {
-  "name": "firebase-tools",
+  "name": "0x80/firebase-tools",
   "version": "12.9.1",
-  "description": "Command-Line Interface for Firebase",
+  "description": "Command-Line Interface for Firebase with experimental monorepo support",
   "main": "./lib/index.js",
   "bin": {
     "firebase": "./lib/bin/firebase.js"
@@ -49,7 +49,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/firebase/firebase-tools.git"
+    "url": "https://github.com/0x80/firebase-tools-with-isolate.git"
   },
   "keywords": [
     "cdn",
@@ -58,6 +58,8 @@
     "cloud",
     "hosting",
     "firebase",
+    "monorepo",
+    "isolate",
     "realtime",
     "websockets",
     "synchronization"
