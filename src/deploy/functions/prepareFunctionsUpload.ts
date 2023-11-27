@@ -5,14 +5,16 @@ import * as fs from "fs";
 import * as path from "path";
 import * as tmp from "tmp";
 
+import type { IsolateExports } from "isolate-package";
+import { dynamicImport } from "../../dynamicImport";
 import { FirebaseError } from "../../error";
-import { logger } from "../../logger";
-import { getSourceHash } from "./cache/hash";
-import * as backend from "./backend";
-import * as functionsConfig from "../../functionsConfig";
-import * as utils from "../../utils";
 import * as fsAsync from "../../fsAsync";
 import * as projectConfig from "../../functions/projectConfig";
+import * as functionsConfig from "../../functionsConfig";
+import { logger } from "../../logger";
+import * as utils from "../../utils";
+import * as backend from "./backend";
+import { getSourceHash } from "./cache/hash";
 
 const CONFIG_DEST_FILE = ".runtimeconfig.json";
 
@@ -24,6 +26,9 @@ interface PackagedSourceInfo {
 type SortedConfig = string | { key: string; value: SortedConfig }[];
 
 // TODO(inlined): move to a file that's not about uploading source code
+/**
+ *
+ */
 export async function getFunctionsConfig(projectId: string): Promise<Record<string, unknown>> {
   try {
     return await functionsConfig.materializeAll(projectId);
@@ -123,14 +128,44 @@ async function packageSource(
   return { pathToSource: tmpFile, hash };
 }
 
+/**
+ *
+ */
 export async function prepareFunctionsUpload(
   sourceDir: string,
   config: projectConfig.ValidatedSingle,
   runtimeConfig?: backend.RuntimeConfigValues
 ): Promise<PackagedSourceInfo | undefined> {
-  return packageSource(sourceDir, config, runtimeConfig);
+  if (config.isolate === true) {
+    utils.logLabeledBullet("functions", `Start isolating the source folder...`);
+    try {
+      /**
+       * Use a dynamic import because isolate-package depends ESM modules.
+       * A normal "await import()" gets transpiled to require() so we use the
+       * dynamicImport function which seems to have been created to get around
+       * that exact problem. Unfortunately, when using it we loose all type
+       * information so for this IsolateExports was created to be able to cast
+       * the result.
+       */
+      const { isolate } = (await dynamicImport("isolate-package")) as IsolateExports;
+
+      const isolateDir = await isolate();
+
+      utils.logLabeledBullet("functions", `Finished isolation at ${clc.bold(isolateDir)}`);
+
+      return packageSource(isolateDir, config, runtimeConfig);
+    } catch (err: any) {
+      utils.logLabeledBullet("functions", `+++ Failed to isolate: ${err.message}`);
+      throw err;
+    }
+  } else {
+    return packageSource(sourceDir, config, runtimeConfig);
+  }
 }
 
+/**
+ *
+ */
 export function convertToSortedKeyValueArray(config: any): SortedConfig {
   if (typeof config !== "object" || config === null) return config;
 
