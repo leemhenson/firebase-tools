@@ -34,7 +34,7 @@
         "glob": "^7.1.2",
         "google-auth-library": "^7.11.0",
         "inquirer": "^8.2.0",
-        "isolate-package": "^1.6.1",
+        "isolate-package": "^1.6.2",
         "js-yaml": "^3.13.1",
         "jsonwebtoken": "^9.0.0",
         "leven": "^3.1.0",
@@ -13048,9 +13048,9 @@
       "integrity": "sha1-6PvzdNxVb/iUehDcsFctYz8s+hA="
     },
     "node_modules/isolate-package": {
-      "version": "1.6.1",
-      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.6.1.tgz",
-      "integrity": "sha512-mXPtxjSKlf8sgBplbsbWmFflJVvVmItWzeqqJbOl8xR0cNMlbfuQsoBSvyVL0GTqdf21XjRz7cNWFLJOxo1rfg==",
+      "version": "1.6.2",
+      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.6.2.tgz",
+      "integrity": "sha512-mNehN9o+xY7748eCJB4G7AfAk3L2aDOHXls1w9SGRIDge7eBFj85W4+tmSVbvqfPGvzbYab5n9yh0QUCtXDLiQ==",
       "dependencies": {
         "@npmcli/arborist": "^7.2.1",
         "@pnpm/exec": "^2.0.0",
@@ -32571,9 +32571,9 @@
       "integrity": "sha1-6PvzdNxVb/iUehDcsFctYz8s+hA="
     },
     "isolate-package": {
-      "version": "1.6.1",
-      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.6.1.tgz",
-      "integrity": "sha512-mXPtxjSKlf8sgBplbsbWmFflJVvVmItWzeqqJbOl8xR0cNMlbfuQsoBSvyVL0GTqdf21XjRz7cNWFLJOxo1rfg==",
+      "version": "1.6.2",
+      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.6.2.tgz",
+      "integrity": "sha512-mNehN9o+xY7748eCJB4G7AfAk3L2aDOHXls1w9SGRIDge7eBFj85W4+tmSVbvqfPGvzbYab5n9yh0QUCtXDLiQ==",
       "requires": {
         "@npmcli/arborist": "^7.2.1",
         "@pnpm/exec": "^2.0.0",
