@@ -24,6 +24,8 @@ pnpm add firebase-tools-with-isolate -D
 
 At the moment, `isolate-package` only supports generating isolated lockfiles for PNPM and NPM, but if you depend on Yarn you can always choose to deploy to Firebase without a lockfile, similar to other workarounds people have been using.
 
+> !! Do not forget to remove/uninstall the original `firebase-tools` package from your repository if you have it installed as a local dependency on your project, because otherwise that binary might get precedence over the forked one, and `npx firebase deploy` will execute the wrong one.
+
 ## Commands
 
 Installing the fork locally provides you with the same `firebase` command but in order to execute a command on the command line you prefix it with `npx` like `npx firebase deploy`.
