@@ -16,17 +16,13 @@ It is probably best to install this as a local dependency on whatever package yo
 npm install firebase-tools-with-isolate --save-dev
 ```
 
-Personally I would advise you to [try PNPM](https://pnpm.io/feature-comparison) for monorepo setups. At the moment, `isolate-package` only supports generating isolated lockfiles for PNPM, but you can always choose to deploy to Firebase without a lockfile, similar to other workarounds people have been using.
+Personally I would advise you to [try PNPM](https://pnpm.io/feature-comparison) for monorepo setups.
 
 ```bash
 pnpm add firebase-tools-with-isolate -D
 ```
 
-Or, if you want to work with the latest pre-release version
-
-```bash
-pnpm add firebase-tools-with-isolate@next -D
-```
+At the moment, `isolate-package` only supports generating isolated lockfiles for PNPM and NPM, but if you depend on Yarn you can always choose to deploy to Firebase without a lockfile, similar to other workarounds people have been using.
 
 ## Commands
 
