@@ -1,24 +1,17 @@
 import { Command } from "../command";
 import { Options } from "../options";
 import { needProjectId } from "../projectUtils";
-import * as gcp from "../gcp/frameworks";
 import { FirebaseError } from "../error";
 import { logger } from "../logger";
-import { bold } from "colorette";
+import * as apphosting from "../gcp/apphosting";
 
 const Table = require("cli-table");
 const COLUMN_LENGTH = 20;
-const TABLE_HEAD = [
-  "Backend Id",
-  "Repository Name",
-  "Location",
-  "URL",
-  "Created Date",
-  "Updated Date",
-];
-export const command = new Command("backends:list")
+const TABLE_HEAD = ["Backend Id", "Repository", "Location", "URL", "Created Date", "Updated Date"];
+export const command = new Command("apphosting:backends:list")
   .description("List backends of a Firebase project.")
   .option("-l, --location <location>", "App Backend location", "-")
+  .before(apphosting.ensureApiEnabled)
   .action(async (options: Options) => {
     const projectId = needProjectId(options);
     const location = options.location as string;
@@ -27,15 +20,11 @@ export const command = new Command("backends:list")
       style: { head: ["green"] },
     });
     table.colWidths = COLUMN_LENGTH;
-    const backendsList: gcp.ListBackendsResponse[] = [];
+    const backendsList: apphosting.Backend[] = [];
     try {
-      const backendsPerRegion = await gcp.listBackends(projectId, location);
-      backendsList.push(backendsPerRegion);
-      populateTable(backendsPerRegion, location, table);
-
-      logger.info();
-      logger.info(`Backends for project ${bold(projectId)}`);
-      logger.info();
+      const backendsPerRegion = await apphosting.listBackends(projectId, location);
+      backendsList.push(...(backendsPerRegion.backends || []));
+      populateTable(backendsList, table);
       logger.info(table.toString());
     } catch (err: any) {
       throw new FirebaseError(
@@ -47,8 +36,8 @@ export const command = new Command("backends:list")
     return backendsList;
   });
 
-function populateTable(backendsLists: gcp.ListBackendsResponse, location: string, table: any) {
-  for (const backend of backendsLists.backends) {
+function populateTable(backends: apphosting.Backend[], table: any) {
+  for (const backend of backends) {
     const [location, , backendId] = backend.name.split("/").slice(3, 6);
     const entry = [
       backendId,

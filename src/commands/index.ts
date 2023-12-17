@@ -96,7 +96,6 @@ export function load(client: any): any {
   client.ext.dev.deprecate = loadCommand("ext-dev-deprecate");
   client.ext.dev.undeprecate = loadCommand("ext-dev-undeprecate");
   client.ext.dev.upload = loadCommand("ext-dev-upload");
-  client.ext.dev.publish = loadCommand("ext-dev-publish");
   client.ext.dev.usage = loadCommand("ext-dev-usage");
   client.firestore = {};
   client.firestore.delete = loadCommand("firestore-delete");
@@ -152,12 +151,18 @@ export function load(client: any): any {
     client.internaltesting.functions.discover = loadCommand("internaltesting-functions-discover");
   }
   if (experiments.isEnabled("internalframeworks")) {
-    client.frameworks = {};
-    client.frameworks.backends = {};
-    client.frameworks.backends.list = loadCommand("frameworks-backends-list");
-    client.frameworks.backends.create = loadCommand("frameworks-backends-create");
-    client.frameworks.backends.get = loadCommand("frameworks-backends-get");
-    client.frameworks.backends.delete = loadCommand("frameworks-backends-delete");
+    client.apphosting = {};
+    client.apphosting.backends = {};
+    client.apphosting.backends.list = loadCommand("apphosting-backends-list");
+    client.apphosting.backends.create = loadCommand("apphosting-backends-create");
+    client.apphosting.backends.get = loadCommand("apphosting-backends-get");
+    client.apphosting.backends.delete = loadCommand("apphosting-backends-delete");
+    client.apphosting.builds = {};
+    client.apphosting.builds.get = loadCommand("apphosting-builds-get");
+    client.apphosting.builds.create = loadCommand("apphosting-builds-create");
+    client.apphosting.rollouts = {};
+    client.apphosting.rollouts.create = loadCommand("apphosting-rollouts-create");
+    client.apphosting.rollouts.list = loadCommand("apphosting-rollouts-list");
   }
   client.login = loadCommand("login");
   client.login.add = loadCommand("login-add");
