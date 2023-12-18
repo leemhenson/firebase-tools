@@ -1,12 +1,16 @@
 # Firebase CLI with monorepo support
 
-This is an experimental fork of the [firebase-tools](https://github.com/firebase/firebase-tools) which integrates [isolate-package](https://github.com/0x80/isolate-package/) as part of the functions `deploy` command in order to [support monorepo setups](https://thijs-koerselman.medium.com/deploy-to-firebase-without-the-hacks-e685de39025e).
+This is a fork of the [firebase-tools](https://github.com/firebase/firebase-tools) which integrates [isolate-package](https://github.com/0x80/isolate-package/) as part of the functions `deploy` command in order to [support monorepo setups](https://thijs-koerselman.medium.com/deploy-to-firebase-without-the-hacks-e685de39025e).
 
 Alternatively, you can manually configure `isolate` as part of the `predeploy` step of your configuration, but having the process integrated and only running as part of the deploy command is essential if you want to have live code updates when running the Firebase emulators locally during development with a watch task.
 
 I suspect it will take some time before the Firebase team would agree to make isolate an integral part of the toolchain and that is why I have published this fork to be available on NPM.
 
-In the meantime I will try to keep this fairly in-sync with updates to the original firebase-tools repository. The published versions of the fork will be kept the same as the original `firebase-tools` package, so you can easily see how up-to-date it is.
+The fork is pretty much identical, and the integration with isolate-package does
+not affect any existing functionality, so I do not think there is a reason to worry
+about things breaking. I will sync the fork with the upstream firebase-tools on
+a regular basis. The fork versions will match the firebase-tools versions for
+clarity.
 
 ## Installation
 
