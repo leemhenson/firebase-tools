@@ -269,7 +269,7 @@ export function normalizeName(s: string): string {
 }
 
 const apiClient = new Client({
-  urlPrefix: hostingApiOrigin,
+  urlPrefix: hostingApiOrigin(),
   apiVersion: "v1beta1",
   auth: true,
 });
@@ -472,7 +472,7 @@ export async function cloneVersion(
   );
   const { name: operationName } = res.body;
   const pollRes = await operationPoller.pollOperation<Version>({
-    apiOrigin: hostingApiOrigin,
+    apiOrigin: hostingApiOrigin(),
     apiVersion: "v1beta1",
     operationResourceName: operationName,
     masterTimeout: 600000,
@@ -530,6 +530,20 @@ export async function listSites(project: string): Promise<Site[]> {
       throw e;
     }
   }
+}
+
+/**
+ * Get fake sites object for demo projects running with emulator
+ */
+export function listDemoSites(projectId: string): Site[] {
+  return [
+    {
+      name: `projects/${projectId}/sites/${projectId}`,
+      defaultUrl: `https://${projectId}.firebaseapp.com`,
+      appId: "fake-app-id",
+      labels: {},
+    },
+  ];
 }
 
 /**

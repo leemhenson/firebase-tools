@@ -18,7 +18,10 @@ import * as FormData from "form-data";
 const pkg = require("../package.json");
 const CLI_VERSION: string = pkg.version;
 
-const GOOG_QUOTA_USER = "x-goog-quota-user";
+const GOOG_QUOTA_USER_HEADER = "x-goog-quota-user";
+
+const GOOG_USER_PROJECT_HEADER = "x-goog-user-project";
+const GOOGLE_CLOUD_QUOTA_PROJECT = process.env.GOOGLE_CLOUD_QUOTA_PROJECT;
 
 export type HttpMethod = "GET" | "PUT" | "POST" | "DELETE" | "PATCH" | "OPTIONS" | "HEAD";
 
@@ -29,6 +32,7 @@ interface BaseRequestOptions<T> extends VerbOptions {
   responseType?: "json" | "stream" | "xml";
   redirect?: "error" | "follow" | "manual";
   compress?: boolean;
+  ignoreQuotaProject?: boolean;
 }
 
 interface RequestOptionsWithSignal<T> extends BaseRequestOptions<T> {
@@ -265,6 +269,13 @@ export class Client {
         reqOptions.headers.set("Content-Type", "application/json");
       }
     }
+    if (
+      !reqOptions.ignoreQuotaProject &&
+      GOOGLE_CLOUD_QUOTA_PROJECT &&
+      GOOGLE_CLOUD_QUOTA_PROJECT !== ""
+    ) {
+      reqOptions.headers.set(GOOG_USER_PROJECT_HEADER, GOOGLE_CLOUD_QUOTA_PROJECT);
+    }
     return reqOptions;
   }
 
@@ -467,10 +478,10 @@ export class Client {
     const logURL = this.requestURL(options);
     logger.debug(`>>> [apiv2][query] ${options.method} ${logURL} ${queryParamsLog}`);
     const headers = options.headers;
-    if (headers && headers.has(GOOG_QUOTA_USER)) {
+    if (headers && headers.has(GOOG_QUOTA_USER_HEADER)) {
       logger.debug(
         `>>> [apiv2][(partial)header] ${options.method} ${logURL} x-goog-quota-user=${
-          headers.get(GOOG_QUOTA_USER) || ""
+          headers.get(GOOG_QUOTA_USER_HEADER) || ""
         }`,
       );
     }
