@@ -1,6 +1,6 @@
 {
   "name": "firebase-tools-with-isolate",
-  "version": "13.6.0",
+  "version": "13.6.1-1",
   "description": "Command-Line Interface for Firebase with monorepo support",
   "main": "./lib/index.js",
   "bin": {
@@ -121,7 +121,7 @@
     "google-auth-library": "^7.11.0",
     "inquirer": "^8.2.6",
     "inquirer-autocomplete-prompt": "^2.0.1",
-    "isolate-package": "^1.10.1",
+    "isolate-package": "^1.12.2",
     "js-yaml": "^3.13.1",
     "jsonwebtoken": "^9.0.0",
     "leven": "^3.1.0",
