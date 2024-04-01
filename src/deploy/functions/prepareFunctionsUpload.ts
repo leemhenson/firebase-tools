@@ -140,7 +140,7 @@ export async function prepareFunctionsUpload(
     utils.logLabeledBullet("functions", `Start isolating the source folder...`);
     try {
       /**
-       * Use a dynamic import because isolate-package depends ESM modules.
+       * Use a dynamic import because isolate-package depends on ESM.
        * A normal "await import()" gets transpiled to require() so we use the
        * dynamicImport function which seems to have been created to get around
        * that exact problem. Unfortunately, when using it we loose all type
