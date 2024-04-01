@@ -37,7 +37,7 @@
         "google-auth-library": "^7.11.0",
         "inquirer": "^8.2.6",
         "inquirer-autocomplete-prompt": "^2.0.1",
-        "isolate-package": "^1.13.1",
+        "isolate-package": "^1.13.2",
         "js-yaml": "^3.13.1",
         "jsonwebtoken": "^9.0.0",
         "leven": "^3.1.0",
@@ -12973,9 +12973,9 @@
       "integrity": "sha1-6PvzdNxVb/iUehDcsFctYz8s+hA="
     },
     "node_modules/isolate-package": {
-      "version": "1.13.1",
-      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.13.1.tgz",
-      "integrity": "sha512-Ierix/OH5tFRekRAYGNjlISx7a6nXo/fqmERoefm3bAmXchcqrvjnnMRkfvUtjV/ObBBPsdwNJkEaD3LdRCt2A==",
+      "version": "1.13.2",
+      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.13.2.tgz",
+      "integrity": "sha512-98pE1SX6iK4P9wW5RmwYFMoS3tFCOayfaspaRAlD7ve4ut7GikquVrMbGic7WnQacas+tGCBvlbNzC9kuCpDiA==",
       "dependencies": {
         "@npmcli/arborist": "^7.4.0",
         "@pnpm/lockfile-file": "^8.1.8",
@@ -32303,9 +32303,9 @@
       "integrity": "sha1-6PvzdNxVb/iUehDcsFctYz8s+hA="
     },
     "isolate-package": {
-      "version": "1.13.1",
-      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.13.1.tgz",
-      "integrity": "sha512-Ierix/OH5tFRekRAYGNjlISx7a6nXo/fqmERoefm3bAmXchcqrvjnnMRkfvUtjV/ObBBPsdwNJkEaD3LdRCt2A==",
+      "version": "1.13.2",
+      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.13.2.tgz",
+      "integrity": "sha512-98pE1SX6iK4P9wW5RmwYFMoS3tFCOayfaspaRAlD7ve4ut7GikquVrMbGic7WnQacas+tGCBvlbNzC9kuCpDiA==",
       "requires": {
         "@npmcli/arborist": "^7.4.0",
         "@pnpm/lockfile-file": "^8.1.8",
