@@ -138,7 +138,9 @@ export async function prepareFunctionsUpload(
 ): Promise<PackagedSourceInfo | undefined> {
   if (config.isolate === true) {
     utils.logLabeledBullet("functions", `Start isolating the source folder...`);
+    const cwd = process.cwd();
     try {
+      process.chdir(sourceDir);
       /**
        * Use a dynamic import because isolate-package depends on ESM.
        * A normal "await import()" gets transpiled to require() so we use the
@@ -157,6 +159,8 @@ export async function prepareFunctionsUpload(
     } catch (err: any) {
       utils.logLabeledBullet("functions", `+++ Failed to isolate: ${err.message}`);
       throw err;
+    } finally {
+      process.chdir(cwd);
     }
   } else {
     return packageSource(sourceDir, config, runtimeConfig);
