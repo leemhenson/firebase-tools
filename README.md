@@ -16,17 +16,15 @@ clarity.
 
 It is probably best to install this as a local dependency on whatever package you want to deploy to Firebase, as opposed to using a global install. This way the forked binary does not interfere with the original one on your system, and you can easily use the fork on one project will still using the original one on others.
 
-```bash
-npm install firebase-tools-with-isolate --save-dev
-```
-
-Personally I would advise you to [try PNPM](https://pnpm.io/feature-comparison) for monorepo setups.
+It is recommended to use `pnpm` over `npm` or `yarn`. Apart from being fast and
+efficient, PNPM has better support for monorepos, and the the lockfile isolation
+code is solid and works in parallel for multiple packages, [unlike NPM](https://github.com/0x80/isolate-package/README.md#npm)
 
 ```bash
 pnpm add firebase-tools-with-isolate -D
 ```
 
-At the moment, `isolate-package` only supports generating isolated lockfiles for PNPM and NPM, but if you depend on Yarn you can always choose to deploy to Firebase without a lockfile, similar to other workarounds people have been using.
+Or run the equivalent for NPM or Yarn.
 
 > !! Do not forget to remove/uninstall the original `firebase-tools` package from your repository if you have it installed as a local dependency on your project, because otherwise that binary might get precedence over the forked one, and `npx firebase deploy` will execute the wrong one.
 
