@@ -1,1 +1,2 @@
-Improve internal handling of config files (#6987)
+- Added `firebase init genkit`. See more at https://firebase.google.com/docs/genkit
+- Exposes the `apphosting:*` commands!

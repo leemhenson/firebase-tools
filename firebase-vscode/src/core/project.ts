@@ -6,7 +6,6 @@ import { FirebaseProjectMetadata } from "../types/project";
 import { currentUser, isServiceAccount } from "./user";
 import { listProjects } from "../cli";
 import { pluginLogger } from "../logger-wrapper";
-import { selectProjectInMonospace } from "../../../src/monospace";
 import { currentOptions } from "../options";
 import { globalSignal } from "../utils/globals";
 import { firstWhereDefined } from "../utils/signal";
@@ -87,32 +86,7 @@ export function registerProject(broker: ExtensionBrokerImpl): Disposable {
   const command = vscode.commands.registerCommand(
     "firebase.selectProject",
     async () => {
-      if (process.env.MONOSPACE_ENV) {
-        pluginLogger.debug(
-          "selectProject: found MONOSPACE_ENV, " +
-            "prompting user using external flow",
-        );
-        /**
-         * Monospace case: use Monospace flow
-         */
-        const monospaceExtension =
-          vscode.extensions.getExtension("google.monospace");
-        process.env.MONOSPACE_DAEMON_PORT =
-          monospaceExtension.exports.getMonospaceDaemonPort();
-        try {
-          const projectId = await selectProjectInMonospace({
-            projectRoot: currentOptions.value.cwd,
-            project: undefined,
-            isVSCE: true,
-          });
-
-          if (projectId) {
-            currentProjectId.value = projectId;
-          }
-        } catch (e) {
-          pluginLogger.error(e);
-        }
-      } else if (isServiceAccount.value) {
+      if (isServiceAccount.value) {
         return;
       } else {
         try {

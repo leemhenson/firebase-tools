@@ -231,9 +231,24 @@ export type EmulatorsConfig = {
     port?: number;
   };
   singleProjectMode?: boolean;
+  dataconnect?: {
+    host?: string;
+    port?: number;
+  };
 };
 
 export type ExtensionsConfig = Record<string, string>;
+
+export type DataConnectSingle = {
+  // The directory containing dataconnect.yaml for this service
+  source: string;
+  // The location to deploy this service to (ie 'us-central1')
+  location: string;
+} & Deployable;
+
+export type DataConnectMultiple = DataConnectSingle[];
+
+export type DataConnectConfig = DataConnectSingle | DataConnectMultiple;
 
 export type FirebaseConfig = {
   /**
@@ -248,4 +263,5 @@ export type FirebaseConfig = {
   remoteconfig?: RemoteConfigConfig;
   emulators?: EmulatorsConfig;
   extensions?: ExtensionsConfig;
+  dataconnect?: DataConnectConfig;
 };
