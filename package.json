@@ -121,7 +121,7 @@
     "google-auth-library": "^7.11.0",
     "inquirer": "^8.2.6",
     "inquirer-autocomplete-prompt": "^2.0.1",
-    "isolate-package": "^1.14.0",
+    "isolate-package": "^1.16.0",
     "jsonwebtoken": "^9.0.0",
     "leven": "^3.1.0",
     "libsodium-wrappers": "^0.7.10",
@@ -243,5 +243,6 @@
     "typescript": "^4.5.4",
     "typescript-json-schema": "^0.50.1",
     "vite": "^4.2.1"
-  }
+  },
+  "packageManager": "pnpm@9.0.5+sha256.61bd66913b52012107ec25a6ee4d6a161021ab99e04f6acee3aa50d0e34b4af9"
 }
