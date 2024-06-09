@@ -1,2 +1,2 @@
-- Added `firebase init genkit`. See more at https://firebase.google.com/docs/genkit
-- Exposes the `apphosting:*` commands!
+- Adds a warning to `firebase dataconnect:sdk:generate` when no generated SDKs are configured.
+- Fixes some cases where `firebase init dataconnect` did not write project files correctly.

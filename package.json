@@ -1,7 +1,7 @@
 {
   "name": "firebase-tools-with-isolate",
-  "version": "13.9.0",
   "description": "Command-Line Interface for Firebase with monorepo support",
+  "version": "13.11.2",
   "main": "./lib/index.js",
   "bin": {
     "firebase": "lib/bin/firebase.js"
@@ -95,7 +95,7 @@
   },
   "dependencies": {
     "@google-cloud/cloud-sql-connector": "^1.2.3",
-    "@google-cloud/pubsub": "^3.0.1",
+    "@google-cloud/pubsub": "^4.4.0",
     "abort-controller": "^3.0.0",
     "ajv": "^6.12.6",
     "archiver": "^5.0.0",
