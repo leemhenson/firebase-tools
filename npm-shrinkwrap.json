@@ -39,7 +39,7 @@
         "google-auth-library": "^9.7.0",
         "inquirer": "^8.2.6",
         "inquirer-autocomplete-prompt": "^2.0.1",
-        "isolate-package": "^1.16.0",
+        "isolate-package": "^1.18.0",
         "jsonwebtoken": "^9.0.0",
         "leven": "^3.1.0",
         "libsodium-wrappers": "^0.7.10",
@@ -13700,9 +13700,9 @@
       "integrity": "sha1-6PvzdNxVb/iUehDcsFctYz8s+hA="
     },
     "node_modules/isolate-package": {
-      "version": "1.16.0",
-      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.16.0.tgz",
-      "integrity": "sha512-4msBB3lBsw7l62S9XpQvOOxSi0OIiKeUDNPA+55zlqXqHlv6gAljiiFIbaLIVhK5Hvz/44ki1z8nDxYKZy7RTg==",
+      "version": "1.18.0",
+      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.18.0.tgz",
+      "integrity": "sha512-5aPeH+STEKYn7xMyP1O4CzkX9IJ0guVSIxb0hBZeKlSxrbsyq84MjNr7Q3f4jjVm9tOE9jETSk1G5RW5pHOkEw==",
       "dependencies": {
         "@npmcli/arborist": "^7.4.0",
         "@pnpm/logger": "^5.0.0",
@@ -34230,9 +34230,9 @@
       "integrity": "sha1-6PvzdNxVb/iUehDcsFctYz8s+hA="
     },
     "isolate-package": {
-      "version": "1.16.0",
-      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.16.0.tgz",
-      "integrity": "sha512-4msBB3lBsw7l62S9XpQvOOxSi0OIiKeUDNPA+55zlqXqHlv6gAljiiFIbaLIVhK5Hvz/44ki1z8nDxYKZy7RTg==",
+      "version": "1.18.0",
+      "resolved": "https://registry.npmjs.org/isolate-package/-/isolate-package-1.18.0.tgz",
+      "integrity": "sha512-5aPeH+STEKYn7xMyP1O4CzkX9IJ0guVSIxb0hBZeKlSxrbsyq84MjNr7Q3f4jjVm9tOE9jETSk1G5RW5pHOkEw==",
       "requires": {
         "@npmcli/arborist": "^7.4.0",
         "@pnpm/logger": "^5.0.0",
