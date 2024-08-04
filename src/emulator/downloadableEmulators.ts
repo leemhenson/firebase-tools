@@ -45,9 +45,9 @@ const EMULATOR_UPDATE_DETAILS: { [s in DownloadableEmulators]: EmulatorUpdateDet
   ui: experiments.isEnabled("emulatoruisnapshot")
     ? { version: "SNAPSHOT", expectedSize: -1, expectedChecksum: "" }
     : {
-        version: "1.12.1",
-        expectedSize: 3498269,
-        expectedChecksum: "a7f4398a00e5ca22abdcd78dc3877d00",
+        version: "1.13.0",
+        expectedSize: 3605485,
+        expectedChecksum: "ec0aa91592c56af9ff7df18168d58459",
       },
   pubsub: {
     version: "0.8.14",
@@ -57,20 +57,20 @@ const EMULATOR_UPDATE_DETAILS: { [s in DownloadableEmulators]: EmulatorUpdateDet
   dataconnect:
     process.platform === "darwin"
       ? {
-          version: "1.2.0",
-          expectedSize: 23954240,
-          expectedChecksum: "0f250761959519bb5a28fed76ceab2cb",
+          version: "1.3.2",
+          expectedSize: 24195840,
+          expectedChecksum: "b60f4501c657bec4dc8df3f3ec7ab3fd",
         }
       : process.platform === "win32"
         ? {
-            version: "1.2.0",
-            expectedSize: 24360960,
-            expectedChecksum: "168ce32c742e1d26037c52bdbb7d871c",
+            version: "1.3.2",
+            expectedSize: 24610304,
+            expectedChecksum: "37d5e08f4df5e07b41160b8f2fd90135",
           }
         : {
-            version: "1.2.0",
-            expectedSize: 23970052,
-            expectedChecksum: "2ca17e4009a9ebae0f7c983bafff2ee6",
+            version: "1.3.2",
+            expectedSize: 24109208,
+            expectedChecksum: "52b09c69bc9a3a84b01a3a7311817229",
           },
 };
 
@@ -180,7 +180,7 @@ export const DownloadDetails: { [s in DownloadableEmulators]: EmulatorDownloadDe
       expectedChecksum: EMULATOR_UPDATE_DETAILS.dataconnect.expectedChecksum,
       skipChecksumAndSize: false,
       namePrefix: "dataconnect-emulator",
-      auth: true,
+      auth: false,
     },
   },
 };
@@ -273,7 +273,7 @@ const Commands: { [s in DownloadableEmulators]: DownloadableEmulatorCommand } = 
     shell: false,
   },
   pubsub: {
-    binary: getExecPath(Emulators.PUBSUB)!,
+    binary: `${getExecPath(Emulators.PUBSUB)!}`,
     args: [],
     optionalArgs: ["port", "host"],
     joinArgs: true,
@@ -287,17 +287,16 @@ const Commands: { [s in DownloadableEmulators]: DownloadableEmulatorCommand } = 
     shell: false,
   },
   dataconnect: {
-    binary: getExecPath(Emulators.DATACONNECT),
-    args: ["dev"],
+    binary: `${getExecPath(Emulators.DATACONNECT)}`,
+    args: ["--logtostderr", "-v=2", "dev"],
     optionalArgs: [
       "listen",
       "config_dir",
-      "project_id",
-      "service_location",
-      "disable_sdk_generation",
-      "resolvers_emulator",
-      "vertex_location",
-      "rpc_retry_count",
+      "enable_output_schema_extensions",
+      "enable_output_generated_sdk",
+      // Additional flags that CLI shouldn't pass:
+      // rpc_retry_count,
+      // resolvers_emulator,
     ],
     joinArgs: true,
     shell: false,
@@ -441,6 +440,9 @@ async function _runBinary(
       };
       if (command.shell && utils.IS_WINDOWS) {
         opts.shell = true;
+        if (command.binary.includes(" ")) {
+          command.binary = `"${command.binary}"`;
+        }
       }
       emulator.instance = childProcess.spawn(command.binary, command.args, opts);
     } catch (e: any) {
