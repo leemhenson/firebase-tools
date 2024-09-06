@@ -235,6 +235,10 @@ export type EmulatorsConfig = {
     host?: string;
     port?: number;
   };
+  tasks?: {
+    host?: string;
+    port?: number;
+  };
 };
 
 export type ExtensionsConfig = Record<string, string>;

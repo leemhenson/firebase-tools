@@ -540,12 +540,14 @@ export class FunctionsEmulator implements EmulatorInstance {
       };
       const userEnvs = functionsEnv.loadUserEnvs(userEnvOpt);
       const discoveredBuild = await runtimeDelegate.discoverBuild(runtimeConfig, environment);
-      const resolution = await resolveBackend(
-        discoveredBuild,
-        JSON.parse(firebaseConfig),
+      const resolution = await resolveBackend({
+        build: discoveredBuild,
+        firebaseConfig: JSON.parse(firebaseConfig),
         userEnvOpt,
         userEnvs,
-      );
+        nonInteractive: false,
+        isEmulator: true,
+      });
       const discoveredBackend = resolution.backend;
       const endpoints = backend.allEndpoints(discoveredBackend);
       prepareEndpoints(endpoints);
@@ -652,6 +654,15 @@ export class FunctionsEmulator implements EmulatorInstance {
           definition.name,
           definition.region,
         );
+        if (definition.taskQueueTrigger) {
+          added = await this.addTaskQueueTrigger(
+            this.args.projectId,
+            definition.region,
+            definition.name,
+            url,
+            definition.taskQueueTrigger,
+          );
+        }
       } else if (definition.eventTrigger) {
         const service: string = getFunctionService(definition);
         const key = this.getTriggerKey(definition);
@@ -1191,6 +1202,35 @@ export class FunctionsEmulator implements EmulatorInstance {
     };
 
     return true;
+  }
+
+  async addTaskQueueTrigger(
+    projectId: string,
+    location: string,
+    entryPoint: string,
+    defaultUri: string,
+    taskQueueTrigger: backend.TaskQueueTrigger,
+  ): Promise<boolean> {
+    logger.debug(`addTaskQueueTrigger`, JSON.stringify(taskQueueTrigger));
+    if (!EmulatorRegistry.isRunning(Emulators.TASKS)) {
+      logger.debug(`addTaskQueueTrigger`, "TQ not running");
+      return Promise.resolve(false);
+    }
+    const bundle = {
+      ...taskQueueTrigger,
+      defaultUri,
+    };
+
+    try {
+      await EmulatorRegistry.client(Emulators.TASKS).post(
+        `/projects/${projectId}/locations/${location}/queues/${entryPoint}`,
+        bundle,
+      );
+      return true;
+    } catch (err) {
+      this.logger.log("WARN", "Error adding Task Queue function: " + err);
+      return false;
+    }
   }
 
   getProjectId(): string {
