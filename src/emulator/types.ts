@@ -1,5 +1,6 @@
 import { ChildProcess } from "child_process";
 import { EventEmitter } from "events";
+import * as experiments from "../experiments";
 
 export enum Emulators {
   AUTH = "auth",
@@ -8,6 +9,7 @@ export enum Emulators {
   FIRESTORE = "firestore",
   DATABASE = "database",
   HOSTING = "hosting",
+  APPHOSTING = "apphosting",
   PUBSUB = "pubsub",
   UI = "ui",
   LOGGING = "logging",
@@ -25,6 +27,7 @@ export type DownloadableEmulators =
   | Emulators.UI
   | Emulators.STORAGE
   | Emulators.DATACONNECT;
+
 export const DOWNLOADABLE_EMULATORS = [
   Emulators.FIRESTORE,
   Emulators.DATABASE,
@@ -43,6 +46,7 @@ export const IMPORT_EXPORT_EMULATORS = [
 ];
 
 export const ALL_SERVICE_EMULATORS = [
+  ...(experiments.isEnabled("emulatorapphosting") ? [Emulators.APPHOSTING] : []),
   Emulators.AUTH,
   Emulators.FUNCTIONS,
   Emulators.FIRESTORE,
@@ -158,6 +162,7 @@ export interface DownloadableEmulatorCommand {
   optionalArgs: string[];
   joinArgs: boolean;
   shell: boolean;
+  port?: number;
 }
 
 export interface EmulatorDownloadOptions {

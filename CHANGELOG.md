@@ -1,3 +1,11 @@
-- Added support for Cloud Tasks within the Functions emulator. (#7475)
-- Released Firestore Emulator v 1.19.8 which adds support for `FindNearest.distanceResultField` and `FindNearest.distanceThreshold` parameters.
-- Temporarily removed Extensions from Functions deploy because it was causing unexpected Extension deletions. (#7590, #7582)
+- Migrated some API calls from `firebase.googleapis.com` to `cloudresourcemanager.googleapis.com`.
+- Moved firebase-tools-ui server.js logic to fireabse-tools to run it in-memory. (#7897)
+- Updates `superstatic` to `9.1.0` (#7929).
+- Added the appdistribution:group:list and appdistribution:testers:list commands.
+- Aliased `appdistribution:group:*` commands to `appdistribution:groups:*`.
+- Updated the Firebase Data Connect local toolkit to v1.7.3, which includes:
+  - Bug fixes for `@auth` expressions that reference the `auth` variable
+  - Allows custom boolean claims on the auth token to be returned in expressions
+  - Adds support for `Optional` arrays in Swift codegen
+  - Updates Kotlin codegen to use fully-qualified class names everywhere
+  - Removes `StringType_pattern` from generated docs and GQL prelude. (#7968)

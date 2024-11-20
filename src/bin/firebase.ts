@@ -18,10 +18,10 @@ const updateNotifier = updateNotifierPkg({ pkg });
 import { marked } from "marked";
 marked.use(markedTerminal() as any);
 
-import { Command } from "commander";
+import { CommanderStatic } from "commander";
 import { join } from "node:path";
 import { SPLAT } from "triple-beam";
-const stripAnsi = require("strip-ansi");
+import { stripVTControlCharacters } from "node:util";
 import * as fs from "node:fs";
 
 import { configstore } from "../configstore";
@@ -34,7 +34,7 @@ import * as utils from "../utils";
 import * as winston from "winston";
 
 let args = process.argv.slice(2);
-let cmd: Command;
+let cmd: CommanderStatic;
 
 function findAvailableLogFile(): string {
   const candidates = ["firebase-debug.log"];
@@ -77,7 +77,7 @@ logger.add(
     filename: logFilename,
     format: winston.format.printf((info) => {
       const segments = [info.message, ...(info[SPLAT] || [])].map(utils.tryStringify);
-      return `[${info.level}] ${stripAnsi(segments.join(" "))}`;
+      return `[${info.level}] ${stripVTControlCharacters(segments.join(" "))}`;
     }),
   }),
 );
