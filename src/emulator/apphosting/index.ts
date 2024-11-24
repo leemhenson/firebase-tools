@@ -1,6 +1,6 @@
 import { EmulatorInfo, EmulatorInstance, Emulators } from "../types";
 import { start as apphostingStart } from "./serve";
-import { logger } from "./utils";
+import { logger } from "./developmentServer";
 interface AppHostingEmulatorArgs {
   options?: any;
   port?: number;
@@ -18,6 +18,7 @@ export class AppHostingEmulator implements EmulatorInstance {
 
   async start(): Promise<void> {
     const { hostname, port } = await apphostingStart({
+      port: this.args.port,
       startCommand: this.args.startCommandOverride,
       rootDirectory: this.args.rootDirectory,
     });

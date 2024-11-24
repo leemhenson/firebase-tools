@@ -1,11 +1,5 @@
-- Migrated some API calls from `firebase.googleapis.com` to `cloudresourcemanager.googleapis.com`.
-- Moved firebase-tools-ui server.js logic to fireabse-tools to run it in-memory. (#7897)
-- Updates `superstatic` to `9.1.0` (#7929).
-- Added the appdistribution:group:list and appdistribution:testers:list commands.
-- Aliased `appdistribution:group:*` commands to `appdistribution:groups:*`.
-- Updated the Firebase Data Connect local toolkit to v1.7.3, which includes:
-  - Bug fixes for `@auth` expressions that reference the `auth` variable
-  - Allows custom boolean claims on the auth token to be returned in expressions
-  - Adds support for `Optional` arrays in Swift codegen
-  - Updates Kotlin codegen to use fully-qualified class names everywhere
-  - Removes `StringType_pattern` from generated docs and GQL prelude. (#7968)
+- Fixes an issue where `emulators:exec` would return a 0 error code when emulators failed to start. (#7974)
+- Added `--import` and `emulators:export` support to the Data Connect emulator.
+- Added `firebase.json#emulators.dataconnect.dataDir`. When set, Data Connect data will be persisted to the configured directory between emulator runs.
+- Added App Hosting Emulator: https://firebase.google.com/docs/app-hosting/emulate
+- Added `apphosting:config:export` to export App Hosting configurations such as secrets into an apphosting.local.yaml file, to be used by the emulator
