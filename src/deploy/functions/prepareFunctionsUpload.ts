@@ -136,30 +136,34 @@ export async function prepareFunctionsUpload(
   config: projectConfig.ValidatedSingle,
   runtimeConfig?: backend.RuntimeConfigValues,
 ): Promise<PackagedSourceInfo | undefined> {
-  if (config.isolate === true) {
-    utils.logLabeledBullet("functions", `Start isolating the source folder...`);
-    try {
-      /**
-       * Use a dynamic import because isolate-package depends on ESM.
-       * A normal "await import()" gets transpiled to require() so we use the
-       * dynamicImport function which seems to have been created to get around
-       * that exact problem. Unfortunately, when using it we loose all type
-       * information so for this IsolateExports was created to be able to cast
-       * the result.
-       */
-      const { isolate } = (await dynamicImport("isolate-package")) as IsolateExports;
+  return packageSource(sourceDir, config, runtimeConfig);
+}
 
-      const isolateDir = await isolate();
+/**
+ * Isolate the source directory and return the path to the isolated directory.
+ * Config is not used yet, but I think we will use it in the future to support
+ * the Firebase recommended monorepo alternative setup.
+ */
+export async function runIsolate(_config: projectConfig.ValidatedSingle): Promise<string> {
+  try {
+    utils.logLabeledBullet("functions", `Isolate the source`);
+    /**
+     * Use a dynamic import because isolate-package depends on ESM.
+     * A normal "await import()" gets transpiled to require() so we use the
+     * dynamicImport function which seems to have been created to get around
+     * that exact problem. Unfortunately, when using it we loose all type
+     * information so for this IsolateExports was created to be able to cast
+     * the result.
+     */
+    const { isolate } = (await dynamicImport("isolate-package")) as IsolateExports;
 
-      utils.logLabeledBullet("functions", `Finished isolation at ${clc.bold(isolateDir)}`);
+    const isolateDir = await isolate();
 
-      return packageSource(isolateDir, config, runtimeConfig);
-    } catch (err: any) {
-      utils.logLabeledBullet("functions", `+++ Failed to isolate: ${err.message}`);
-      throw err;
-    }
-  } else {
-    return packageSource(sourceDir, config, runtimeConfig);
+    utils.logLabeledBullet("functions", `Finished isolation at ${clc.bold(isolateDir)}`);
+    return isolateDir;
+  } catch (err: any) {
+    utils.logLabeledBullet("functions", `Isolation failed: ${err.message}`, "error");
+    throw err;
   }
 }
 
