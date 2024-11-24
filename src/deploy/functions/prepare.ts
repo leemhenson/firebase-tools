@@ -1,25 +1,40 @@
 import * as clc from "colorette";
 
-import * as args from "./args";
-import * as backend from "./backend";
-import * as build from "./build";
-import * as ensureApiEnabled from "../../ensureApiEnabled";
-import * as functionsConfig from "../../functionsConfig";
-import * as functionsEnv from "../../functions/env";
-import * as runtimes from "./runtimes";
-import * as supported from "./runtimes/supported";
-import * as validate from "./validate";
-import * as ensure from "./ensure";
+import { DeployOptions } from "..";
 import {
-  functionsOrigin,
   artifactRegistryDomain,
-  runtimeconfigOrigin,
   cloudRunApiOrigin,
   eventarcOrigin,
+  functionsOrigin,
   pubsubOrigin,
+  runtimeconfigOrigin,
   storageOrigin,
 } from "../../api";
+import * as ensureApiEnabled from "../../ensureApiEnabled";
+import { FirebaseError } from "../../error";
+import { assertExhaustive } from "../../functional";
+import * as functionsEnv from "../../functions/env";
+import { AUTH_BLOCKING_EVENTS } from "../../functions/events/v1";
+import {
+  configForCodebase,
+  normalizeAndValidate,
+  ValidatedConfig,
+} from "../../functions/projectConfig";
+import * as functionsConfig from "../../functionsConfig";
+import { generateServiceIdentity } from "../../gcp/serviceusage";
+import { logger } from "../../logger";
 import { Options } from "../../options";
+import { needProjectId, needProjectNumber } from "../../projectUtils";
+import { logLabeledBullet } from "../../utils";
+import { Context as ExtContext, Payload as ExtPayload } from "../extensions/args";
+import { prepareDynamicExtensions } from "../extensions/prepare";
+import * as args from "./args";
+import * as backend from "./backend";
+import { allEndpoints, Backend } from "./backend";
+import * as build from "./build";
+import { applyBackendHashToBackends } from "./cache/applyHash";
+import { ensureServiceAgentRoles } from "./checkIam";
+import * as ensure from "./ensure";
 import {
   EndpointFilter,
   endpointMatchesAnyFilter,
@@ -27,27 +42,12 @@ import {
   groupEndpointsByCodebase,
   targetCodebases,
 } from "./functionsDeployHelper";
-import { logLabeledBullet } from "../../utils";
-import { getFunctionsConfig, prepareFunctionsUpload } from "./prepareFunctionsUpload";
+import { getFunctionsConfig, prepareFunctionsUpload, runIsolate } from "./prepareFunctionsUpload";
 import { promptForFailurePolicies, promptForMinInstances } from "./prompts";
-import { needProjectId, needProjectNumber } from "../../projectUtils";
-import { logger } from "../../logger";
+import * as runtimes from "./runtimes";
+import * as supported from "./runtimes/supported";
 import { ensureTriggerRegions } from "./triggerRegionHelper";
-import { ensureServiceAgentRoles } from "./checkIam";
-import { FirebaseError } from "../../error";
-import {
-  configForCodebase,
-  normalizeAndValidate,
-  ValidatedConfig,
-} from "../../functions/projectConfig";
-import { AUTH_BLOCKING_EVENTS } from "../../functions/events/v1";
-import { generateServiceIdentity } from "../../gcp/serviceusage";
-import { applyBackendHashToBackends } from "./cache/applyHash";
-import { allEndpoints, Backend } from "./backend";
-import { assertExhaustive } from "../../functional";
-import { prepareDynamicExtensions } from "../extensions/prepare";
-import { Context as ExtContext, Payload as ExtPayload } from "../extensions/args";
-import { DeployOptions } from "..";
+import * as validate from "./validate";
 
 export const EVENTARC_SOURCE_ENV = "EVENTARC_CLOUD_EVENT_SOURCE";
 
@@ -196,7 +196,7 @@ export async function prepare(
   for (const [codebase, wantBackend] of Object.entries(wantBackends)) {
     const config = configForCodebase(context.config, codebase);
     const sourceDirName = config.source;
-    const sourceDir = options.config.path(sourceDirName);
+    let sourceDir = options.config.path(sourceDirName);
     const source: args.Source = {};
     if (backend.someEndpoint(wantBackend, () => true)) {
       logLabeledBullet(
@@ -204,6 +204,11 @@ export async function prepare(
         `preparing ${clc.bold(sourceDirName)} directory for uploading...`,
       );
     }
+
+    if (config.isolate === true) {
+      sourceDir = await runIsolate(config);
+    }
+
     if (backend.someEndpoint(wantBackend, (e) => e.platform === "gcfv2")) {
       const packagedSource = await prepareFunctionsUpload(sourceDir, config);
       source.functionsSourceV2 = packagedSource?.pathToSource;
